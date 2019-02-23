@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using YoutubeExplode.Internal;
+using YoutubeExplode.Models.ClosedCaptions;
 
 namespace YoutubeExplode.Models
 {
     /// <summary>
     /// Information about a YouTube video.
     /// </summary>
-    public class Video
-    {
+    public class Video {
         /// <summary>
         /// ID of this video.
         /// </summary>
@@ -21,6 +21,12 @@ namespace YoutubeExplode.Models
         /// </summary>
         [NotNull]
         public string Author { get; }
+
+        /// <summary>
+        /// ID of the channel this Video belongs to.
+        /// It seems would be possible be null if this Video object is retrieved with playlist retrieve function
+        /// </summary>
+        public string ChannelId { get; }
 
         /// <summary>
         /// Upload date of this video.
@@ -62,13 +68,17 @@ namespace YoutubeExplode.Models
         [NotNull]
         public Statistics Statistics { get; }
 
+        public IReadOnlyList<ClosedCaptionTrackInfo> CaptionTrackInfos { get; }
+
         /// <summary>
         /// Initializes an instance of <see cref="Video"/>.
         /// </summary>
-        public Video(string id, string author, DateTimeOffset uploadDate, string title, string description,
-            ThumbnailSet thumbnails, TimeSpan duration, IReadOnlyList<string> keywords, Statistics statistics)
+        public Video(string id, string channelId, string author, DateTimeOffset uploadDate, string title, string description,
+            ThumbnailSet thumbnails, TimeSpan duration, IReadOnlyList<string> keywords, Statistics statistics,
+            IReadOnlyList<ClosedCaptionTrackInfo> trackInfos)
         {
             Id = id.GuardNotNull(nameof(id));
+            ChannelId = channelId.GuardNotNull(nameof(channelId));
             Author = author.GuardNotNull(nameof(author));
             UploadDate = uploadDate;
             Title = title.GuardNotNull(nameof(title));
@@ -77,6 +87,7 @@ namespace YoutubeExplode.Models
             Duration = duration.GuardNotNegative(nameof(duration));
             Keywords = keywords.GuardNotNull(nameof(keywords));
             Statistics = statistics.GuardNotNull(nameof(statistics));
+            CaptionTrackInfos = trackInfos;
         }
 
         /// <inheritdoc />

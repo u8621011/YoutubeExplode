@@ -9,7 +9,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 
 ## Download
 
-- [NuGet](https://nuget.org/packages/YoutubeExplode): `Install-Package YoutubeExplode`
+- [NuGet](https://nuget.org/packages/YoutubeExplode): `dotnet add package YoutubeExplode`
 - [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/YoutubeExplode)
 
 ## Features
@@ -23,7 +23,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 - All metadata properties are exposed using strong types and enums
 - Provides static methods to validate IDs and to parse IDs from URLs
 - Fully asynchronous API
-- Targets .NET Framework 4.5+, .NET Core 1.0+ and .NET Standard 1.1+
+- Targets .NET Framework 4.5+ and .NET Standard 1.1+
 - No need for an API key and no usage quotas
 
 ## Screenshots
@@ -100,6 +100,7 @@ var videoAuthor = video.Author; // "Igorrr Official"
 
 - [AngleSharp](https://github.com/AngleSharp/AngleSharp)
 - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+- [ConfigureAwait.Fody](https://github.com/Fody/ConfigureAwait)
 - [GalaSoft.MVVMLight](http://www.mvvmlight.net)
 - [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
 - [NUnit](https://github.com/nunit/nunit)

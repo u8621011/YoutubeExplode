@@ -55,7 +55,14 @@ namespace YoutubeExplode.Tests
 
         public static IEnumerable GetVideoIds_Valid_Available_Unplayable()
         {
-            yield return new TestCaseData("p3dDcKOFXQg"); // requires purchase
+            // Include nested
+            foreach (var testCaseData in GetVideoIds_Valid_Available_Unplayable_RequiresPurchase())
+                yield return testCaseData;
+        }
+
+        public static IEnumerable GetVideoIds_Valid_Available_Unplayable_RequiresPurchase()
+        {
+            yield return new TestCaseData("p3dDcKOFXQg");
         }
 
         public static IEnumerable GetVideoIds_Valid_Available_Playable()
@@ -68,7 +75,6 @@ namespace YoutubeExplode.Tests
             yield return new TestCaseData("5VGm0dczmHc"); // rating not allowed
             yield return new TestCaseData("ZGdLIwrGHG8"); // unlisted
             yield return new TestCaseData("H1O_-JVbl_k"); // very large video
-            yield return new TestCaseData("NgTdNd5lkvY"); // controversial video
             yield return new TestCaseData("rsAAeyAr-9Y"); // recording of a live stream
 
             // Include nested

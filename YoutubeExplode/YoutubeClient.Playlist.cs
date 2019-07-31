@@ -31,7 +31,7 @@ namespace YoutubeExplode
             // Get all videos across pages
             JToken playlistJson;
             var page = 1;
-            var index = 0;
+            var index = playlistId.StartsWith("PL", StringComparison.OrdinalIgnoreCase) ? 101 : 0;
             var videoIds = new HashSet<string>();
             var videos = new List<Video>();
             do
@@ -40,7 +40,6 @@ namespace YoutubeExplode
                 playlistJson = await GetPlaylistJsonAsync(playlistId, index).ConfigureAwait(false);
 
                 // Get videos
-                var countTotal = 0;
                 var countDelta = 0;
                 foreach (var videoJson in playlistJson.SelectToken("video").EmptyIfNull())
                 {
@@ -57,10 +56,11 @@ namespace YoutubeExplode
 
                     // Extract video keywords
                     var videoKeywordsJoined = videoJson.SelectToken("keywords").Value<string>();
-                    var videoKeywords = Regex.Matches(videoKeywordsJoined, @"(?<=(^|\s)(?<q>""?))([^""]|(""""))*?(?=\<q>(?=\s|$))")
+                    var videoKeywords = Regex.Matches(videoKeywordsJoined, "\"[^\"]+\"|\\S+")
                         .Cast<Match>()
                         .Select(m => m.Value)
                         .Where(s => !s.IsNullOrWhiteSpace())
+                        .Select(s => s.Trim('"'))
                         .ToArray();
 
                     // Create statistics and thumbnails
@@ -77,9 +77,6 @@ namespace YoutubeExplode
                         // Increment delta
                         countDelta++;
                     }
-
-                    // Increment total count
-                    countTotal++;
                 }
 
                 // If no distinct videos were added to the list - break
@@ -87,7 +84,7 @@ namespace YoutubeExplode
                     break;
 
                 // Advance index and page
-                index += countTotal;
+                index += 100;
                 page++;
             } while (page <= maxPages);
 
